@@ -4,7 +4,7 @@
 conjurURL=$(hostname -f)
 conjurAccount=deutsche-telekom
 conjurUser=admin
-conjurPassword=MySecretP@ss1
+conjurPassword="$(cat admin_password)"
 
 # Init Conjur CLI
 echo "Init Conjur CLI"

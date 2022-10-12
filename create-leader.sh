@@ -12,8 +12,6 @@ conjurAccount=deutsche-telekom
 echo "Creating conjur master"
 echo "------------------------------------"
 set -x
-systemctl --user disable conjur
-systemctl --user  list-unit-files | grep conjur
 
 podman stop $containerName || true && podman rm $containerName || true
 podman run \
@@ -35,18 +33,11 @@ podman run \
 
 sleep 10
 
-mkdir -p ~/.config/systemd/user
-podman generate systemd conjur-leader --name --container-prefix="" --separator="" > ~/.config/systemd/user/conjur.service
-systemctl --user enable conjur
-systemctl --user  list-unit-files | grep conjur
-
 podman exec $containerName evoke configure master \
   --accept-eula \
   --hostname $masterDNS \
   --master-altnames $(hostname -s),$(hostname -f) \
   --admin-password="$(cat admin_password)" \
   $conjurAccount
-
-#podman exec conjur-leader evoke variable set UI_SESSION_TIMEOUT 9999
 
 set +x
