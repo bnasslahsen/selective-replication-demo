@@ -1,12 +1,18 @@
 # Demo script for the selective replication
 
+## How replication Sets works ?
+
+![](replication-set.png)
+
+
 ## Demo Architecture
 
 ![](archi.png)
 
 ## Pre-requisites
 - Last version of the conjur binary uploaded to the target servers
-- Conjur-cli
+- conjur-cli
+- docker or podman installed
 - Clone this git repository
 
 ## Create Conjur Master
@@ -41,10 +47,9 @@ podman exec conjur-leader evoke replication-set list
 ```
 
 ## Add secrets to replication Sets
-- Run:
+- Create the US policy replication Set:
 ```shell
 conjur policy load -b root -f permit-us-replication.yaml
-conjur policy load -b root -f permit-eu-replication.yaml
 ```
 
 - List resources that would replicate the data for us region:
@@ -60,6 +65,11 @@ WHERE is_role_allowed_to(
 resource_id
 );"
 '
+```
+
+- Create the EU policy replication Set:
+```shell
+conjur policy load -b root -f permit-eu-replication.yaml
 ```
 
 - List resources that would replicate the data for eu region:
@@ -95,21 +105,18 @@ resource_id
 ## Check the replicated secrets 
 - Run in FULL follower node:
 ```shell
-conjur init --s --url https://conjur-follower-full.demo.cybr --account deutsche-telekom
-conjur login -i admin -p MySecretP@ss1
-conjur list
+./init-conjur-cli.sh
+conjur list --kind variable
 ```
 
 - Run in US follower node:
 ```shell
-conjur init --s --url https://conjur-follower-us.demo.cybr --account deutsche-telekom
-conjur login -i admin -p MySecretP@ss1
-conjur list
+./init-conjur-cli.sh
+conjur list --kind variable
 ```
 
 - Run in EU follower node:
 ```shell
-conjur init --s --url https://conjur-follower-eu.demo.cybr --account deutsche-telekom
-conjur login -i admin -p MySecretP@ss1
-conjur list
+./init-conjur-cli.sh
+conjur list --kind variable
 ```

@@ -6,3 +6,9 @@
   member: !group
     account: system
     id: conjur/replication-sets/eu/replicated-data
+
+- !grant
+  role: !group Vault/LOB_user/Safe01/delegation/consumers
+  member: !group
+    account: system
+    id: conjur/replication-sets/eu/replicated-data

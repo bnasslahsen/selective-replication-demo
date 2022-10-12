@@ -26,6 +26,4 @@ podman run \
     --volume /opt/cyberark/dap/logs:/var/log/conjur:Z \
     $CONJUR_IMAGE
 
-podman logs --since 2m $containerName
-
 set +x
