@@ -33,11 +33,11 @@ podman run \
 
 sleep 10
 
+set +x
+
 podman exec $containerName evoke configure master \
   --accept-eula \
   --hostname $masterDNS \
   --master-altnames $(hostname -s),$(hostname -f) \
   --admin-password="$(cat admin_password)" \
   $conjurAccount
-
-set +x

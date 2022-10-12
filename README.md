@@ -38,7 +38,7 @@ podman exec conjur-leader evoke replication-set list
 ```shell
 cd policies
 ```
-- Run:
+- You need Conjur-CLI installed, then Run:
 ```shell
 conjur policy load -b root -f app.yaml
 conjur variable set -i full-only -v "full-test"
