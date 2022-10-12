@@ -10,13 +10,17 @@
 ![](archi.png)
 
 ## Pre-requisites
-- Last version of the conjur binary uploaded to the target servers
+- Minimum conjur 13.x binary uploaded to the target servers
 - conjur-cli
 - docker or podman installed
 - Clone this git repository
 
 ## Create Conjur Master
-- Run:
+- Go to scrips directory:
+```shell
+cd scripts
+```
+- Then run:
 ```shell
 ./create-leader.sh
 ```
@@ -30,9 +34,18 @@ podman exec conjur-leader evoke replication-set list
 ```
 
 ## Load sample policy
+- Go to polcies directory:
+```shell
+cd policies
+```
 - Run:
 ```shell
 conjur policy load -b root -f app.yaml
+conjur variable set -i full-only -v "full-test"
+conjur variable set -i eu-only -v "eu-test"
+conjur variable set -i us-only -v "us-test"
+conjur variable set -i Vault/LOB_user/Safe01/delegation/eu-only-1 -v "eu-test1"
+conjur variable set -i Vault/LOB_user/Safe01/delegation/eu-only-2 -v "eu-test2"
 ```
 
 ## Create the followers replication Sets
@@ -88,6 +101,10 @@ resource_id
 ```
 
 ## Generate the seed files for each follower
+- Go to scrips directory:
+```shell
+cd scripts
+```
 - Run in the leader:
 ```shell
 ./create-follower-seed-full.sh
@@ -107,16 +124,31 @@ resource_id
 ```shell
 ./init-conjur-cli.sh
 conjur list --kind variable
+conjur variable get -i full-only
+conjur variable get -i eu-only
+conjur variable get -i us-only
+conjur variable get -i Vault/LOB_user/Safe01/delegation/eu-only-1
+conjur variable get -i Vault/LOB_user/Safe01/delegation/eu-only-2
 ```
 
 - Run in US follower node:
 ```shell
 ./init-conjur-cli.sh
 conjur list --kind variable
+conjur variable get -i us-only
+conjur variable get -i full-only
+conjur variable get -i eu-only
+conjur variable get -i Vault/LOB_user/Safe01/delegation/eu-only-1
+conjur variable get -i Vault/LOB_user/Safe01/delegation/eu-only-2
 ```
 
 - Run in EU follower node:
 ```shell
 ./init-conjur-cli.sh
 conjur list --kind variable
+conjur variable get -i eu-only
+conjur variable get -i Vault/LOB_user/Safe01/delegation/eu-only-1
+conjur variable get -i Vault/LOB_user/Safe01/delegation/eu-only-2
+conjur variable get -i us-only
+conjur variable get -i full-only
 ```

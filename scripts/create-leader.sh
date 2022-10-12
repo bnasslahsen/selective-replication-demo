@@ -13,7 +13,7 @@ echo "Creating conjur master"
 echo "------------------------------------"
 set -x
 
-podman stop $containerName || true && podman rm $containerName || true
+podman rm --ignore --force $containerName
 podman run \
     --name $containerName \
     --detach \

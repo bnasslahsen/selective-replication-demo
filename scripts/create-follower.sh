@@ -10,7 +10,7 @@ CONJUR_IMAGE=conjur-appliance:5.16.13.dev.1
 echo "Creating conjur follower"
 echo "------------------------------------"
 set -x
-podman stop $containerName || true && podman rm $containerName || true
+podman rm --ignore --force $containerName
 podman run \
     --name $containerName \
     --detach \
