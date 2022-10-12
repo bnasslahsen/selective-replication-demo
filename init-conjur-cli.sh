@@ -10,13 +10,7 @@ conjurPassword="$(cat admin_password)"
 echo "Init Conjur CLI"
 echo "------------------------------------"
 set -x
-conjur init --s --url https://$conjurURL --account $conjurAccount << EOF
-yes
-yes
-yes
-yes
-EOF
-
+printf 'yes\nyes\nyes\nyes' | conjur init --s --url https://$conjurURL --account $conjurAccount
+set +x
 # Login to Conjur CLI
 conjur login -i $conjurUser -p $conjurPassword
-set +x
