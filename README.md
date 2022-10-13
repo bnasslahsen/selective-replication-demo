@@ -4,7 +4,6 @@
 
 ![](replication-set.png)
 
-
 ## Demo Architecture
 
 ![](archi.png)
